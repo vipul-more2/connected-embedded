@@ -1,3 +1,4 @@
+
 //============================================================================
 // Name        : ConnectedEmbeddedAssignment_1.cpp
 // Author      : 
@@ -15,8 +16,11 @@ int main() {
 
 	RTC_DS3231 rtcobj;
 	rtcobj.getRTCtime();
-
-
+        rtcobj.getRTCdate();
+	rtcobj.setRTCdate(4,16,2,22);
+	rtcobj.getRTCdate();
+	rtcobj.setRTCtime(50,10,11);
+	rtcobj.getRTCtemperature();
 	return 0;
 }
 

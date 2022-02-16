@@ -10,8 +10,6 @@
 
 
 
-
-
 class RTC_DS3231 {
 
 private :
@@ -22,6 +20,11 @@ public:
 	void readRTCFile();
 	void getRTCtime();
         int bcdToDec(char b);
+	int Dectobcd(char b);
+        void getRTCdate();
+	void setRTCdate( char, char, char, char);
+	void setRTCtime( int, int, int);
+	void getRTCtemperature();
 	virtual ~RTC_DS3231();
 };
 
