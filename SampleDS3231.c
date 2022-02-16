@@ -1,5 +1,3 @@
-
-#include<iostream>
 #include<stdio.h>
 #include<fcntl.h>
 #include<sys/ioctl.h>
@@ -12,7 +10,7 @@ int bcdToDec(char b) { return (b/16)*10 + (b%16); }
 
 int main(){
    int file;
-   std::cout << ("Starting the DS3231 test application\n");
+   printf("Starting the DS3231 test application\n");
    if((file=open("/dev/i2c-1", O_RDWR)) < 0){
       perror("failed to open the bus\n");
       return 1;
@@ -31,7 +29,7 @@ int main(){
       perror("Failed to read in the buffer\n");
       return 1;
    }
-   std::cout << ("The RTC time is %02d:%02d:%02d\n", bcdToDec(buf[2]),
+   printf("The RTC time is %02d:%02d:%02d\n", bcdToDec(buf[2]),
          bcdToDec(buf[1]), bcdToDec(buf[0]));
    close(file);
    return 0;
