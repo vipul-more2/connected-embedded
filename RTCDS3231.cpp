@@ -113,6 +113,107 @@ void RTC_DS3231 :: getRTCtemperature(){
 
 }
 
+void RTC_DS3231 :: getsquarewave( int frequencyselector){
+
+	readRTCFile();
+	ioctl(file, I2C_SLAVE, 0x68);
+	char squarewavegenbuffer[19];
+	squarewavegenbuffer[0] = 0x0e;
+	if (frequencyselector == 1){
+		squarewavegenbuffer[1] = 0b00000100;
+	}
+	if (frequencyselector == 2){
+		squarewavegenbuffer[1] = 0b00001100;
+	}
+	if (frequencyselector == 3){
+		squarewavegenbuffer[1] = 0b00010100;
+	}
+	if (frequencyselector == 4){
+		squarewavegenbuffer[1] = 0b00011100;
+	}
+
+	write(file, squarewavegenbuffer, 2);
+	close(file);
+
+}
+
+void RTC_DS3231 :: setAlarmClock(int hours, int minutes, int seconds, int day, int date, int modeselector){
+	readRTCFile();
+	ioctl(file, I2C_SLAVE, 0x68);
+        char alarmClockBuffer[19];
+ 	alarmClockBuffer[0] = 0x07;
+    	alarmClockBuffer[1] = Dectobcd(seconds);
+    	alarmClockBuffer[2] = Dectobcd(minutes);
+    	alarmClockBuffer[3] = Dectobcd(hours);
+
+
+   	 if (modeselector == 1){
+    		alarmClockBuffer[4] = Dectobcd(5);
+    			}
+
+    else if (modeselector == 0){
+    		alarmClockBuffer[4] = Dectobcd(4);
+    }
+
+    write(file,alarmClockBuffer, 4);
+ close(file);
+    
+    readRTCFile();
+ioctl(file,I2C_SLAVE,0x68);
+
+           
+  char tempbuf2[1]={0x00};
+write(file, tempbuf2,1);
+char buf[19];
+               	   read(file,buf, 19);
+               	   printf("Alarm 1 is set at  %02d:%02d:%02d:%02d\n", bcdToDec(buf[9]),
+               	   bcdToDec(buf[8]),bcdToDec(buf[7]),bcdToDec(buf[10]));
+               	   close(file);
+}
+
+
+      void RTC_DS3231 :: setAlarmClock_2(int hours, int minutes, int day, int date, int modeselector){
+        readRTCFile();
+        ioctl(file, I2C_SLAVE, 0x68);
+        char alarmClockBuffer[19];
+        alarmClockBuffer[0] = 0x0B;
+        alarmClockBuffer[1] = Dectobcd(minutes);
+        alarmClockBuffer[2] = Dectobcd(hours);
+
+         if (modeselector == 1){
+                alarmClockBuffer[3] = Dectobcd(5);
+                        }
+
+    else if (modeselector == 0){
+                alarmClockBuffer[3] = Dectobcd(8);
+                  }
+
+
+    write(file,alarmClockBuffer, 4);
+ close(file);
+    
+    readRTCFile();
+ioctl(file,I2C_SLAVE,0x68);
+
+        char tempbuf2[1]={0x00};
+write(file, tempbuf2,1);
+char buf[19];
+
+
+                   read(file, buf, 19);
+                   printf("Alarm 2 is set at  %02d:%02d:%02d\n", bcdToDec(buf[13]),
+                   bcdToDec(buf[12]),bcdToDec(buf[14]));
+                   close(file);
+
+
+}
+
+
+
+
+
+
+
 
 
 RTC_DS3231::~RTC_DS3231() {

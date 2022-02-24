@@ -25,8 +25,12 @@ public:
 	void setRTCdate( char, char, char, char);
 	void setRTCtime( int, int, int);
 	void getRTCtemperature();
+        void getsquarewave(int);
+	void setAlarmClock(int, int, int, int, int, int);     
+	void setAlarmClock_2(int,int,int,int,int);
 	virtual ~RTC_DS3231();
 };
 
 #endif /* RTCDS3231_H_ */
+
 
