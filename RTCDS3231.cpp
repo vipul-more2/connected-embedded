@@ -151,11 +151,12 @@ void RTC_DS3231 :: setAlarmClock(int hours, int minutes, int seconds, int day, i
     		alarmClockBuffer[4] = Dectobcd(5);
     			}
 
-    else if (modeselector == 0){
+         else if (modeselector == 0){
     		alarmClockBuffer[4] = Dectobcd(4);
-    }
+          }
+         alarmClockBuffer[8] = 0b00000000;
 
-    write(file,alarmClockBuffer, 4);
+    write(file,alarmClockBuffer, 5);
  close(file);
     
     readRTCFile();
@@ -168,7 +169,9 @@ char buf[19];
                	   read(file,buf, 19);
                	   printf("Alarm 1 is set at  %02d:%02d:%02d:%02d\n", bcdToDec(buf[9]),
                	   bcdToDec(buf[8]),bcdToDec(buf[7]),bcdToDec(buf[10]));
-               	   close(file);
+               	  printf("Value of register is %02d:%02d\n",bcdToDec(buf[15]),buf[15]);
+printf("Value of buf 14 is %02d:%02d\n",bcdToDec(buf[14]),buf[14]);	        
+	 close(file);
 }
 
 
@@ -187,9 +190,10 @@ char buf[19];
     else if (modeselector == 0){
                 alarmClockBuffer[3] = Dectobcd(8);
                   }
+ 
+alarmClockBuffer[4] = 0b00000011;
 
-
-    write(file,alarmClockBuffer, 4);
+    write(file,alarmClockBuffer, 5);
  close(file);
     
     readRTCFile();
