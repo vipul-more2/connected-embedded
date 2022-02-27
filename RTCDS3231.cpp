@@ -16,7 +16,10 @@
 #include <string>
 #include <unistd.h>
 #include <csignal>
+#include <thread>
 
+using namespace std::this_thread;
+using namespace std::chrono_literals;
 
 RTC_DS3231::RTC_DS3231() {
 	// TODO Auto-generated constructor stub
@@ -107,8 +110,8 @@ void RTC_DS3231 :: getRTCtemperature(){
            	   write(file, temperatureBuffer, 1);
            	   char tempbuf[BUFFER_SIZE];
            	   read(file, tempbuf, BUFFER_SIZE);
-           	   printf("The surrounding temperature reading is %02d:%02d\n", bcdToDec(tempbuf[17]),
-           	   bcdToDec(tempbuf[18]));
+           	   printf("The surrounding temperature reading in Fahrenheit  is %02d:%02d\n", bcdToDec(tempbuf[18]),
+           	   bcdToDec(tempbuf[19]));
            	   close(file);
 
 }
@@ -154,8 +157,9 @@ void RTC_DS3231 :: setAlarmClock(int hours, int minutes, int seconds, int day, i
          else if (modeselector == 0){
     		alarmClockBuffer[4] = Dectobcd(4);
           }
-         alarmClockBuffer[8] = 0b00000000;
-
+         alarmClockBuffer[8] = 0b00000001;
+sleep_for(250ms);
+alarmClockBuffer[8]=0b00000000;
     write(file,alarmClockBuffer, 5);
  close(file);
     
@@ -169,8 +173,8 @@ char buf[19];
                	   read(file,buf, 19);
                	   printf("Alarm 1 is set at  %02d:%02d:%02d:%02d\n", bcdToDec(buf[9]),
                	   bcdToDec(buf[8]),bcdToDec(buf[7]),bcdToDec(buf[10]));
-               	  printf("Value of register is %02d:%02d\n",bcdToDec(buf[15]),buf[15]);
-printf("Value of buf 14 is %02d:%02d\n",bcdToDec(buf[14]),buf[14]);	        
+               	 // printf("Value of register is %02d:%02d\n",bcdToDec(buf[15]),buf[15]);
+//printf("Value of buf 14 is %02d:%02d\n",bcdToDec(buf[14]),buf[14]);	        
 	 close(file);
 }
 
@@ -192,6 +196,8 @@ printf("Value of buf 14 is %02d:%02d\n",bcdToDec(buf[14]),buf[14]);
                   }
  
 alarmClockBuffer[4] = 0b00000011;
+sleep_for(250ms);
+alarmClockBuffer[4] = 0b00000000;
 
     write(file,alarmClockBuffer, 5);
  close(file);
@@ -211,12 +217,6 @@ char buf[19];
 
 
 }
-
-
-
-
-
-
 
 
 

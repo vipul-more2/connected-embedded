@@ -17,13 +17,17 @@ int main() {
 	RTC_DS3231 rtcobj;
 	rtcobj.getRTCtime();
         rtcobj.getRTCdate();
-//	rtcobj.setRTCdate(4,16,2,22);
+	rtcobj.setRTCdate(1,27,2,22);
 	rtcobj.getRTCdate();
-//	rtcobj.setRTCtime(50,10,11);
+	rtcobj.setRTCtime(50,8,8);
+
+
 	rtcobj.getRTCtemperature();
-//	rtcobj.getsquarewave(3);
-	rtcobj.setAlarmClock(7,8,52,05,14,1);
+
+	rtcobj.getsquarewave(1);
+	rtcobj.setAlarmClock(8,10,52,05,14,1);
 	rtcobj.setAlarmClock_2(25,11,4,21,0);
+
 	return 0;
 }
 
